@@ -69,7 +69,7 @@ OFFSETS = {
 if __name__ == "__main__":
 
     PORT = "/dev/ttyAMA0"
-    with serial.Serial(PORT, baudrate=9600) as ser:
+    with serial.Serial(PORT, baudrate=9600, timeout=3) as ser:
         while True:
             t_msg = read_message(ser)        
             record = {"offsets": [], "values": []}
