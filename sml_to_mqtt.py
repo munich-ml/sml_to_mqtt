@@ -71,6 +71,8 @@ if __name__ == "__main__":
     PORT = "/dev/ttyAMA0"
     with serial.Serial(PORT, baudrate=9600, timeout=3) as ser:
         while True:
+            ser.reset_input_buffer()
+            ser.reset_output_buffer()
             try:
                 t_msg = read_message(ser)
             except ValueError as e:
