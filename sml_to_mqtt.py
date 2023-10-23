@@ -71,16 +71,20 @@ if __name__ == "__main__":
     PORT = "/dev/ttyAMA0"
     with serial.Serial(PORT, baudrate=9600, timeout=3) as ser:
         while True:
-            t_msg = read_message(ser)        
-            record = {"offsets": [], "values": []}
-            for offset in range(300):
-                val = getInt(t_msg, offset)
-                if val is not None:
-                    record["offsets"].append(offset)
-                    record["values"].append(val)
-            
-            fn = dt.datetime.now().strftime("%Y%m%d_%H%M%S") + ".json"
-            with open(os.path.join(os.getcwd(), "raw", fn), "w") as file:
-                json.dump(record, file)
+            try:
+                t_msg = read_message(ser)
+            except ValueError as e:
+                print(e)
+            else:        
+                record = {"offsets": [], "values": []}
+                for offset in range(300):
+                    val = getInt(t_msg, offset)
+                    if val is not None:
+                        record["offsets"].append(offset)
+                        record["values"].append(val)
                 
-            time.sleep(10)
+                fn = dt.datetime.now().strftime("%Y%m%d_%H%M%S") + ".json"
+                with open(os.path.join(os.getcwd(), "raw", fn), "w") as file:
+                    json.dump(record, file)
+                    
+                time.sleep(10)
