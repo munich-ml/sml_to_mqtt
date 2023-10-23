@@ -1,5 +1,4 @@
-#!/usr/bin/python3
-# inspired by Helmut Schmidt https://github.com/huirad/pysml
+# inspired by https://github.com/huirad/pysml
 
 import json, os, serial, time
 import datetime as dt
