@@ -1,7 +1,6 @@
 # inspired by https://github.com/huirad/pysml
 
 import logging, os, serial, time
-import datetime as dt
 from copy import deepcopy
 from ruamel.yaml import YAML
 
@@ -153,6 +152,6 @@ if __name__ == "__main__":
     while True:
         vals = sml_client.read()
         if vals is not None:
-            logging.info(f"value update {dt.datetime.now()} {vals}")     
+            logging.info(f"value update {vals}")     
 
         time.sleep(10)
