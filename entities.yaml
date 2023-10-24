@@ -1,0 +1,21 @@
+# MQTT device entities definition file
+# Home Assistant will discover each item (e.g. temperature) as an entity
+energy_imported:
+  type: sensor                # sensor = data flow: MQTT device -> MQTT broker. Docu: https://developers.home-assistant.io/docs/core/entity/sensor/
+  name: Energy imported       # friendly name that shows up in Home Assitant GUI
+  device_class: energy        # (optional) Avaliable options: https://developers.home-assistant.io/docs/core/entity/sensor/#available-device-classes 
+  unit: kWh                   # (optional) Defines the unit_of_measurement in Home Assistant
+  state_class: total          # (optional) Avaliable options: https://developers.home-assistant.io/docs/core/entity/sensor/#available-state-classes
+  icon: home-import-outline   # (optional) Define an MSI icon from https://materialdesignicons.com/
+  value: 0                    # proprietary attribute used as initial value und value variable
+  offset: 171                 # Offset defines the positon within the SML protocol. Not used for MQTT!
+
+energy_exported:
+  type: sensor                # sensor = data flow: MQTT device -> MQTT broker. Docu: https://developers.home-assistant.io/docs/core/entity/sensor/
+  name: Energy exported       # friendly name that shows up in Home Assitant GUI
+  device_class: energy        # (optional) Avaliable options: https://developers.home-assistant.io/docs/core/entity/sensor/#available-device-classes 
+  unit: kWh                   # (optional) Defines the unit_of_measurement in Home Assistant
+  state_class: total          # (optional) Avaliable options: https://developers.home-assistant.io/docs/core/entity/sensor/#available-state-classes
+  icon: home-export-outline   # (optional) Define an MSI icon from https://materialdesignicons.com/
+  value: 0                    # proprietary attribute used as initial value und value variable
+  offset: 202                 # Offset defines the positon within the SML protocol. Not used for MQTT!
