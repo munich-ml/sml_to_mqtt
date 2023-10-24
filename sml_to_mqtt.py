@@ -1,10 +1,16 @@
 # inspired by https://github.com/huirad/pysml
 
-import serial, time
+import logging, os, serial, time
 import datetime as dt
-import os
 from copy import deepcopy
 from ruamel.yaml import YAML
+
+
+wd = os.path.dirname(__file__)
+log_path = os.path.join(wd, "logging.txt")
+logging.basicConfig(format='%(asctime)s | %(levelname)-8s | %(funcName)s() %(filename)s line=%(lineno)s | %(message)s',
+                    handlers=[logging.FileHandler(log_path), logging.StreamHandler(),],
+                    level=logging.INFO)
 
 
 class SmlClient():
@@ -22,7 +28,7 @@ class SmlClient():
         
         
     def __del__(self):  
-        print("Teardown: Closing serial connection")
+        logging.info("Teardown: Closing serial connection")
         self.ser.close()    
         
         
@@ -88,11 +94,17 @@ class SmlClient():
             NoneType | dict: Dict with entity keys and values like {'energy_imported': 140, 'energy_exported': 2200}
                 or None if there are no changes and always_return is False
         """
-        msg = self._read_message()
+        try:
+            msg = self._read_message()
+        except ValueError as e:
+            logging.warning(f"_read_message() failed with exception {e}")
+            return
+        
         change = False
         for entity, offset in self._offsets.items():
             val = self._get_value(msg, offset) 
             if val is None:
+                logging.warning(f"_get_value() returned None")    
                 return
             change = change or val != self._last_values[entity]
             self._last_values[entity] = val
@@ -132,16 +144,15 @@ if __name__ == "__main__":
     settings = YamlInterface(os.path.join(wd, SETTINGS)).load()
     entities = YamlInterface(os.path.join(wd, ENTITIES)).load()
     
-    kwargs = settings["USB"]
-    # offsets look like this: {'energy_imported': 171, 'energy_exported': 202}
+    kwargs = dict(settings["USB"])
     kwargs["offsets"] = {name: params["offset"] for name, params in entities.items() if "offset" in params}
-    print(f"SmlClient w/ {kwargs}")
+    
+    logging.info(f"Starting SmlClient with {kwargs}")
     sml_client = SmlClient(**kwargs)
-
     
     while True:
         vals = sml_client.read()
         if vals is not None:
-            print(f"value update {dt.datetime.now()} {vals}")     
+            logging.info(f"value update {dt.datetime.now()} {vals}")     
 
         time.sleep(10)
