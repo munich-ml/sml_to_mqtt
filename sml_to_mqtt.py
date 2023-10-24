@@ -89,16 +89,11 @@ class SmlClient():
                 return int.from_bytes(val, byteorder='big', signed=signed)
             
             
-    def read(self, always_return: bool = False): 
+    def read(self): 
         """Reads from the SML interface
-
-        Args:
-            always_return (bool, optional): If True, results are returend even if there are no changes. 
-                Defaults to False.
 
         Returns:
             NoneType | dict: Dict with entity keys and values like {'energy_imported': 140, 'energy_exported': 2200}
-                or None if there are no changes and always_return is False
         """
         try:
             msg = self._read_message()
@@ -117,7 +112,7 @@ class SmlClient():
         
         hourly_update = time.time() - self._last_time_updated > 3600
         
-        if change or always_return or hourly_update:
+        if change or hourly_update:
             self._last_time_updated = time.time()
             return deepcopy(self._last_values)
     
