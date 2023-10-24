@@ -5,12 +5,19 @@ from copy import deepcopy
 from ruamel.yaml import YAML
 
 
-wd = os.path.dirname(__file__)
-log_path = os.path.join(wd, "logging.txt")
-logging.basicConfig(format='%(asctime)s | %(levelname)-8s | %(funcName)s() %(filename)s line=%(lineno)s | %(message)s',
-                    handlers=[logging.FileHandler(log_path), logging.StreamHandler(),],
-                    level=logging.INFO)
+# Constants
+SETTINGS = 'settings.yaml'
+ENTITIES = 'entities.yaml'
+SECRETS = 'secrets.yaml'
+LOGFILE = "logging.txt"
+LOGLEVEL = logging.INFO
 
+
+# setup logging
+wd = os.path.dirname(__file__)
+logging.basicConfig(format='%(asctime)s | %(levelname)-8s | %(funcName)s() %(filename)s line=%(lineno)s | %(message)s',
+                    handlers=[logging.FileHandler(os.path.join(wd, LOGFILE)), 
+                              logging.StreamHandler(),], level=LOGLEVEL)
 
 class SmlClient():
     START_MESSAGE = b'\x01\x01\x01\x01'
@@ -136,10 +143,6 @@ class YamlInterface:
                 
 
 if __name__ == "__main__":
-    SETTINGS = 'settings.yaml'
-    ENTITIES = 'entities.yaml'
-    SECRETS = 'secrets.yaml'
-    wd = os.path.dirname(__file__)
     settings = YamlInterface(os.path.join(wd, SETTINGS)).load()
     entities = YamlInterface(os.path.join(wd, ENTITIES)).load()
     
