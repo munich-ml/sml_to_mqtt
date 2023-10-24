@@ -68,7 +68,7 @@ if __name__ == "__main__":
     }
 
     PORT = "/dev/ttyAMA0"
-    PORT = "COM7"
+    #PORT = "COM7"
     with serial.Serial(PORT, baudrate=9600, timeout=3) as ser:
         while True:
             ser.reset_input_buffer()
