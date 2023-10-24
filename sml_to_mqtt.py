@@ -41,7 +41,7 @@ def read_message(ser):
     return t_msg
 
 
-def getInt(buffer: bytes, offset: int):
+def get_value(buffer: bytes, offset: int):
     """Get the integer value from the buffer at the given offset.
     Size and signed-ness are determined automatically
 
@@ -61,14 +61,14 @@ def getInt(buffer: bytes, offset: int):
             return int.from_bytes(val, byteorder='big', signed=signed)
     
 
-OFFSETS = {
-    171: "Total energy imported",
-    202: "Total energy exported",   
-}
-
 if __name__ == "__main__":
+    OFFSETS = {
+        171: "Total energy imported",
+        202: "Total energy exported",   
+    }
 
     PORT = "/dev/ttyAMA0"
+    PORT = "COM7"
     with serial.Serial(PORT, baudrate=9600, timeout=3) as ser:
         while True:
             ser.reset_input_buffer()
@@ -77,16 +77,9 @@ if __name__ == "__main__":
                 t_msg = read_message(ser)
             except ValueError as e:
                 print(e)
-            else:        
-                record = {"offsets": [], "values": []}
-                for offset in range(300):
-                    val = getInt(t_msg, offset)
-                    if val is not None:
-                        record["offsets"].append(offset)
-                        record["values"].append(val)
-                
-                fn = dt.datetime.now().strftime("%Y%m%d_%H%M%S") + ".json"
-                with open(os.path.join(os.getcwd(), "raw", fn), "w") as file:
-                    json.dump(record, file)
-                    
+            else:   
+                print(f"### update {dt.datetime.now()} ###")     
+                for offset, name in OFFSETS.items():
+                    value = get_value(t_msg, offset)
+                    print(f"- {name}: {value}")
                 time.sleep(10)
