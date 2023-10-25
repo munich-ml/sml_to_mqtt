@@ -107,9 +107,14 @@ class SmlClient():
             if val is None:
                 logging.warning(f"_get_value() returned None")    
                 return
+            before = deepcopy(self._last_values)    
+            
             change = change or val != self._last_values[entity]
             self._last_values[entity] = val
-        
+            if change:
+                after = deepcopy(self._last_values)    
+                logging.info(f"before={before}, after={after}")
+            
         hourly_update = time.time() - self._last_time_updated > 3600
         
         if change or hourly_update:
