@@ -8,7 +8,7 @@ sml:
 mqtt:
   hostname: 192.168.178.63  # MQTT broker within home assistant
   port: 1883                # defaults to 1883
-  name: SWM Energy meter
+  name: SWM_Energy_meter
   manufacturer: "Landis+Gyr"
   model: E220
   client_id: swm_energy_meter
