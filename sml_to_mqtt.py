@@ -10,7 +10,7 @@ SETTINGS = 'settings.yaml'
 ENTITIES = 'entities.yaml'
 SECRETS = 'secrets.yaml'
 LOGFILE = "logging.txt"
-LOGLEVEL = logging.INFO
+LOGLEVEL = logging.DEBUG
 
 
 # setup logging
@@ -112,12 +112,13 @@ class SmlClient():
             self._last_values[entity] = val
             if change:
                 after = deepcopy(self._last_values)    
-                logging.info(f"before={before}, after={after}")
+                logging.debug(f"before={before}, after={after}, val={val}")
             
         hourly_update = time.time() - self._last_time_updated > 3600
         
         if change or hourly_update:
             self._last_time_updated = time.time()
+            logging.debug(f"before={before}, after={after}, val={val}")
             return deepcopy(self._last_values)
     
     
