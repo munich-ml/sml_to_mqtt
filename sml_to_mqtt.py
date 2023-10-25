@@ -77,7 +77,6 @@ class SmlClient():
         Returns:
             bytes: On succes, The extracted integer value.
         """
-        
         if (len(msg)-offset) < 2:
             return
 
