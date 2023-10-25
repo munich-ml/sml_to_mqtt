@@ -15,7 +15,7 @@ LOGLEVEL = logging.DEBUG
 
 # setup logging
 wd = os.path.dirname(__file__)
-logging.basicConfig(format='%(asctime)s | %(levelname)-8s | %(funcName)s() %(filename)s line=%(lineno)s | %(message)s',
+logging.basicConfig(format='%(asctime)s | %(levelname)-7s | %(filename)s line=%(lineno)s | %(message)s',
                     handlers=[logging.FileHandler(os.path.join(wd, LOGFILE)), 
                               logging.StreamHandler(),], level=LOGLEVEL)
 
