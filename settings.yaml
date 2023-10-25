@@ -1,3 +1,5 @@
+app:  
+  polling_interval: 60        # Time between two read-outs (seconds)
 sml:
   port: '/dev/ttyUSB0'       # Serial port '/dev/ttyUSB0'
   baudrate: 9600             # Serial port baudrate
@@ -10,4 +12,4 @@ mqtt:
   manufacturer: "Landis+Gyr"
   model: E220
   client_id: swm_energy_meter
-polling_interval: 60        # Time between two read-outs (seconds)
+
