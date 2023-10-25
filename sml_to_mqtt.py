@@ -157,8 +157,8 @@ if __name__ == "__main__":
                 mqtt.publish_updates() 
                 logging.debug(f"MQTT publish: {states}")
             time.sleep(settings["app"]["polling_interval"])
-    except:
-        pass
+    except Exception as e:
+        logging.error(f"Exiting app because of Exception {e}")
     finally:   # teardown 
         sml_client.__del__()
         mqtt.exit()
