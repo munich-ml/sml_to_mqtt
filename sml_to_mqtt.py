@@ -110,15 +110,15 @@ class SmlClient():
             
             change = change or val != self._last_values[entity]
             self._last_values[entity] = val
+            after = deepcopy(self._last_values)    
             if change:
-                after = deepcopy(self._last_values)    
                 logging.debug(f"before={before}, after={after}, val={val}")
             
         hourly_update = time.time() - self._last_time_updated > 3600
         
         if change or hourly_update:
             self._last_time_updated = time.time()
-            logging.debug(f"before={before}, after={after}, val={val}")
+            logging.debug(f"before={before}, after={after}, val={val}, change={change}")
             return deepcopy(self._last_values)
     
     
