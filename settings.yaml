@@ -1,4 +1,13 @@
-USB:
-  port: '/dev/ttyUSB0'   # Serial port '/dev/ttyUSB0'
-  baudrate: 9600         # Serial port baudrate
-  timeout: 3             # Serial port timeout
+sml:
+  port: '/dev/ttyUSB0'       # Serial port '/dev/ttyUSB0'
+  baudrate: 9600             # Serial port baudrate
+  timeout: 3                 # Serial port timeout
+  max_update_interval: 3600  # Max time between two MQTT publishes (seconds)
+mqtt:
+  hostname: 192.168.178.63  # MQTT broker within home assistant
+  port: 1883                # defaults to 1883
+  name: SWM Energy meter
+  manufacturer: "Landis+Gyr"
+  model: E220
+  client_id: swm_energy_meter
+polling_interval: 60        # Time between two read-outs (seconds)
