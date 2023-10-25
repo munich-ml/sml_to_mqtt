@@ -33,8 +33,9 @@ class SmlClient():
         self._last_time_updated = time.time()                            
         
         
-    def __del__(self):  
-        logging.info("Teardown: Closing serial connection")
+    def __del__(self):
+        """Teardown: Closing serial connection
+        """  
         self.ser.close()    
         
         
