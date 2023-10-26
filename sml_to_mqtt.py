@@ -9,7 +9,7 @@ SETTINGS = 'settings.yaml'
 ENTITIES = 'entities.yaml'
 SECRETS = 'secrets.yaml'
 LOGFILE = "logging.txt"
-LOGLEVEL = logging.INFO
+LOGLEVEL = logging.DEBUG
 
 
 # setup logging
