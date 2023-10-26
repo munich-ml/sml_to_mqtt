@@ -81,7 +81,8 @@ class SmlClient():
         return t_msg
 
 
-    def _get_value(self, msg: bytes, offset: int):
+    @staticmethod
+    def _get_value(msg: bytes, offset: int):
         """Get the integer value from the msg at the given offset.
         Size and signed-ness are determined automatically
 
@@ -113,13 +114,15 @@ class SmlClient():
         
         change = False
         for entity, offset in self._offsets.items():
-            val = self._get_value(msg, offset) 
+            val = SmlClient._get_value(msg, offset) 
+            logging.debug(f"entity={entity}, val={val}, last_values={self._last_values}")
             if val is None:
                 logging.warning(f"_get_value() returned None")    
                 return
-            change = change or val != self._last_values[entity]
+            change = change or (val != self._last_values[entity])
             self._last_values[entity] = val
         
+        logging.debug(f"change={change}, last_values={self._last_values}")
         if change or time.time() - self._last_time_updated > self._max_update_interval:
             self._last_time_updated = time.time()
             return deepcopy(self._last_values)
