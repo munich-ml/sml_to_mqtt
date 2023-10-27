@@ -59,15 +59,15 @@ class SmlClient():
             bytes: SML Message
         """
         # search for the 1st escape sequence - it may be for start or end
-        t_esc = self._ser.read_until(SmlClient.ESCAPE_SEQUENCE)
-        if not t_esc.endswith(SmlClient.ESCAPE_SEQUENCE):
+        esc = self._ser.read_until(SmlClient.ESCAPE_SEQUENCE)
+        if not esc.endswith(SmlClient.ESCAPE_SEQUENCE):
             raise ValueError("ESCAPE_SEQUENCE not found!")
         
         # search for the packet starting with START_MESSAGE and ending with ESCAPE_SEQUENCE
         MAX_READ = 5 #limit the number of read attemps to avoid endless loop
         for _ in range(MAX_READ):
-            t_msg = self._ser.read_until(SmlClient.ESCAPE_SEQUENCE)
-            if t_msg.startswith(SmlClient.START_MESSAGE):
+            msg = self._ser.read_until(SmlClient.ESCAPE_SEQUENCE)
+            if msg.startswith(SmlClient.START_MESSAGE):
                 break
         else:
             raise ValueError("START_MESSAGE not found!")
@@ -78,7 +78,12 @@ class SmlClient():
         if not t_end.startswith(SmlClient.END_MESSAGE):
             raise ValueError("END_MESSAGE not found!")        
 
-        return t_msg
+        logging.debug(str(msg))
+        v1 = SmlClient._get_value(msg, 171)
+        v2 = SmlClient._get_value(msg, 202)
+        logging.debug(f"v1={v1}, v2={v2}")
+        
+        return msg
 
 
     @staticmethod
