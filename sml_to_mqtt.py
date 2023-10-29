@@ -1,5 +1,3 @@
-# inspired by https://github.com/huirad/pysml
-
 import logging, os, serial, time
 from copy import deepcopy
 from mqtt_device import MqttDevice, YamlInterface
