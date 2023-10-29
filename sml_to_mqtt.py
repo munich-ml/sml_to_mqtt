@@ -158,7 +158,7 @@ if __name__ == "__main__":
             if states is not None:
                 mqtt.set_states(states)
                 mqtt.publish_updates() 
-                logging.debug(f"MQTT publish: {states}")
+                logging.info(f"MQTT publish: {states}")
             time.sleep(settings["app"]["polling_interval"])
     except (Exception, KeyboardInterrupt) as e:
         logging.error(f"Exiting app because of Exception {e}")
