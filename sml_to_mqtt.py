@@ -9,7 +9,7 @@ SETTINGS = 'settings.yaml'
 ENTITIES = 'entities.yaml'
 SECRETS = 'secrets.yaml'
 LOGFILE = "logging.txt"
-LOGLEVEL = logging.DEBUG
+LOGLEVEL = logging.INFO
 
 
 # setup logging
@@ -58,6 +58,9 @@ class SmlClient():
         Returns:
             bytes: SML Message
         """
+        # reset input buffer to discard cached data
+        self._ser.reset_input_buffer()
+        
         # search for the 1st escape sequence - it may be for start or end
         esc = self._ser.read_until(SmlClient.ESCAPE_SEQUENCE)
         if not esc.endswith(SmlClient.ESCAPE_SEQUENCE):
@@ -77,11 +80,6 @@ class SmlClient():
         t_end = self._ser.read(4)
         if not t_end.startswith(SmlClient.END_MESSAGE):
             raise ValueError("END_MESSAGE not found!")        
-
-        logging.debug(str(msg))
-        v1 = SmlClient._get_value(msg, 171)
-        v2 = SmlClient._get_value(msg, 202)
-        logging.debug(f"v1={v1}, v2={v2}")
         
         return msg
 
@@ -120,7 +118,6 @@ class SmlClient():
         change = False
         for entity, offset in self._offsets.items():
             val = SmlClient._get_value(msg, offset) 
-            logging.debug(f"entity={entity}, val={val}, last_values={self._last_values}")
             if val is None:
                 logging.warning(f"_get_value() returned None")    
                 return
